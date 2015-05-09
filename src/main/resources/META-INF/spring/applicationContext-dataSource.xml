@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:property-placeholder
+		location="classpath:jdbc.properties"
+		ignore-unresolvable="true" />
+
+	<bean id="dataSource"
+		class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<property name="dataSourceClassName" value="${jdbc.dataSourceClassName}" />
+		<property name="connectionTestQuery" value="SELECT 1" />
+		<property name="dataSourceProperties">
+			<map>
+				<entry key="serverName" value="${jdbc.serverName}" />
+				<entry key="databaseName" value="${jdbc.databaseName}" />
+				<entry key="user" value="${jdbc.user}" />
+				<entry key="password" value="${jdbc.password}" />
+			</map>
+		</property>
+	</bean>
+
+</beans>

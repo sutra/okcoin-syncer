@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<Appenders>
+		<RollingRandomAccessFile name="file"
+			fileName="${sys:log.dir}/okcoin-syncer.log"
+			filePattern="${sys:log.dir}/okcoin-syncer-%d{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout>
+				<Pattern>%d %-6p [%t] %C{1.}.%M:%L %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+		</RollingRandomAccessFile>
+	</Appenders>
+	<Loggers>
+		<Logger name="org.oxerr.okcoin.syncer"
+			level="ALL" includeLocation="true"
+			additivity="false">
+			<AppenderRef ref="file" />
+		</Logger>
+		<Root level="WARN" includeLocation="true">
+			<AppenderRef ref="file" />
+		</Root>
+	</Loggers>
+</Configuration>

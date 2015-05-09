@@ -1,0 +1,41 @@
+#!/bin/sh
+#
+# PROVIDE: okcoin_syncer
+# REQUIRE: DAEMON
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name=okcoin_syncer
+rcvar=${name}_enable
+
+load_rc_config $name
+
+: ${okcoin_syncer_enable:="NO"}
+: ${okcoin_syncer_user:="root"}
+: ${okcoin_syncer_basedir:="/usr/local/okcoin-syncer"}
+: ${okcoin_syncer_etcdir:="/usr/local/etc/okcoin-syncer"}
+: ${okcoin_syncer_logdir:="/var/log"}
+: ${okcoin_syncer_stdout:="${okcoin_syncer_logdir}/okcoin-syncer-stdout.log"}
+: ${okcoin_syncer_stderr:="${okcoin_syncer_logdir}/okcoin-syncer-stderr.log"}
+: ${okcoin_syncer_java_home:="/usr/local/openjdk8-jre"}
+: ${okcoin_syncer_lib:="${okcoin_syncer_basedir}/lib"}
+: ${okcoin_syncer_classpath:="${okcoin_syncer_etcdir}:${okcoin_syncer_lib}/*"}
+: ${okcoin_syncer_args:="tradeSyncer"}
+
+pidfile="/var/run/${name}.pid"
+
+command="/usr/local/bin/jsvc"
+command_args="-java-home '${okcoin_syncer_java_home}' \
+	-server \
+	-user ${okcoin_syncer_user} \
+	-pidfile '${pidfile}' \
+	-outfile '${okcoin_syncer_stdout}' \
+	-errfile '${okcoin_syncer_stderr}' \
+	-classpath '/usr/local/share/java/classes/commons-daemon.jar:${okcoin_syncer_classpath}' \
+	-Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager \
+	-Dlog.dir='${okcoin_syncer_logdir}' \
+	org.oxerr.okcoin.syncer.SyncerDaemon \
+	${okcoin_syncer_args}"
+
+run_rc_command "$1"

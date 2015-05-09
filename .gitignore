@@ -1,0 +1,7 @@
+target/
+.project
+.classpath
+.settings/
+src/main/resources/jdbc.properties
+src/main/resources/okcoin.properties
+.DS_Store
