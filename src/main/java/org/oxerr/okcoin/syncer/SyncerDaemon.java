@@ -35,7 +35,8 @@ public class SyncerDaemon implements Daemon {
 
 		Arrays.stream(names).forEach(
 			name -> syncerThreads.add(
-				new Thread(threadGroup,
+				new Thread(
+					threadGroup,
 					() -> ctx.getBean(name, Syncer.class).run(),
 					name
 				)

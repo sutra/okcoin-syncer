@@ -19,7 +19,9 @@
 	<bean
 		id="exchangeSpecification"
 		class="com.xeiam.xchange.ExchangeSpecification"
-		c:_0="org.oxerr.okcoin.rest.OKCoinExchange" />
+		c:_0="org.oxerr.okcoin.rest.OKCoinExchange"
+		p:apiKey="${okcoin.accessKey}"
+		p:secretKey="${okcoin.secretKey}" />
 	<util:constant
 		id="exchangeFactory"
 		static-field="com.xeiam.xchange.ExchangeFactory.INSTANCE"/>
@@ -35,5 +37,20 @@
 		class="org.oxerr.okcoin.rest.service.polling.OKCoinMarketDataServiceRaw"
 		factory-bean="exchange"
 		factory-method="getPollingMarketDataService" />
+	<bean
+		id="tradeService"
+		class="org.oxerr.okcoin.rest.service.polling.OKCoinTradeServiceRaw"
+		factory-bean="exchange"
+		factory-method="getPollingTradeService" />
+	<bean
+		id="retryService"
+		class="org.oxerr.okcoin.syncer.service.IOExceptionRetryService"
+		c:_0="${okcoin.retry.maxTimes}"
+		c:_1="${okcoin.retry.interval}" />
+	<bean
+		id="extTradeService"
+		class="org.oxerr.okcoin.syncer.service.OKCoinTradeServiceRawExt"
+		c:_0-ref="retryService"
+		c:_1-ref="tradeService" />
 
 </beans>
