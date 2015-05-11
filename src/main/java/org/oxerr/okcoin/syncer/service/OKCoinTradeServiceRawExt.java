@@ -58,7 +58,8 @@ public class OKCoinTradeServiceRawExt {
 			} while (hasGap);
 
 			if (preBatch != null
-					&& batch != null
+					&& !preBatch.isEmpty()
+					&& !batch.isEmpty()
 					&& preBatch.first().getOrderId() == batch.first().getOrderId()
 					&& preBatch.last().getOrderId() == batch.last().getOrderId()) {
 				log.log(Level.FINE, "pre batch is same as current batch.");
