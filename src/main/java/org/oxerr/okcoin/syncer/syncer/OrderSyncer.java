@@ -73,8 +73,8 @@ public class OrderSyncer extends AbstractSyncer {
 		SortedSet<Order> openOrders = sync(0, lastId);
 		SortedSet<Order> closedOrders = sync(1, lastId);
 
-		orderDao.insert(openOrders);
-		orderDao.insert(closedOrders);
+		orderDao.merge(openOrders);
+		orderDao.merge(closedOrders);
 
 		this.lastId = Math.max(
 				openOrders.isEmpty() ? this.lastId : openOrders.last().getOrderId(),

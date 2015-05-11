@@ -10,8 +10,19 @@ public interface OrderDao {
 
 	List<Order> getOrders(int status, long sinceId, long limit);
 
+	void insert(Order order);
+
 	void insert(Iterable<Order> orders);
 
-	void update(Order order);
+	/**
+	 * Update the {@code deal_amount}, {@code status}, {@code avg_price} of the
+	 * order.
+	 *
+	 * @param order the order to update.
+	 * @return the number of rows affected
+	 */
+	int update(Order order);
+
+	void merge(Iterable<Order> orders);
 
 }

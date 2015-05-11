@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +20,7 @@ import org.oxerr.okcoin.rest.dto.Status;
 import org.oxerr.okcoin.rest.dto.Type;
 import org.oxerr.okcoin.syncer.dao.OrderDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -79,6 +81,11 @@ public class JdbcOrderDao extends JdbcDaoSupport implements OrderDao {
 			}, status, sinceId, limit);
 	}
 
+	@Override
+	public void insert(Order order) {
+		this.insert(Arrays.asList(order));
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -112,12 +119,32 @@ public class JdbcOrderDao extends JdbcDaoSupport implements OrderDao {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void update(Order order) {
-		getJdbcTemplate().update(UPDATE_ORDER_SQL,
+	public int update(Order order) {
+		return getJdbcTemplate().update(UPDATE_ORDER_SQL,
 			order.getDealAmount(),
 			order.getStatus().getCode(),
 			order.getAvgPrice(),
 			order.getOrderId());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void merge(Iterable<Order> orders) {
+		try {
+			insert(orders);
+		} catch (DuplicateKeyException e) {
+			log.log(Level.FINER, e.getMessage(), e);
+			for (Order order : orders) {
+				int rows = update(order);
+				log.log(Level.FINER, "order id: {0}, rows: {1}", new Object[] {
+						order.getOrderId(), rows, });
+				if (rows == 0) {
+					insert(order);
+				}
+			}
+		}
 	}
 
 }
