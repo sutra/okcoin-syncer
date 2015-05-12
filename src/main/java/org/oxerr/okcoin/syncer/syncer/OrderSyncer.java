@@ -1,12 +1,16 @@
 package org.oxerr.okcoin.syncer.syncer;
 
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import org.oxerr.okcoin.rest.OKCoinException;
 import org.oxerr.okcoin.rest.dto.Order;
@@ -104,9 +108,41 @@ public class OrderSyncer extends AbstractSyncer {
 		} while (!Thread.interrupted() && orders.size() > 0);
 	}
 
-	private void syncOrders(List<Order> orders) throws OKCoinException, IOException {
-		List<Long> orderIds = orders.stream().mapToLong(o -> o.getOrderId()).boxed().collect(Collectors.toList());
-		Arrays.stream(extRawTradeService.getOrders(symbol, 0, orderIds.toArray(new Long[] {}))).forEach(order -> orderDao.update(order));
+	/**
+	 * Synchronize the order status from exchange to database.
+	 *
+	 * @param orders the orders to be synchronized.
+	 * @throws OKCoinException indicates exchange side exception.
+	 * @throws IOException indicates I/O exception.
+	 */
+	private void syncOrders(List<Order> orders) throws OKCoinException,
+			IOException {
+		final Map<Long, Order> oldStatus = orders.stream()
+			.collect(toMap(Order::getOrderId, identity()));
+		final List<Long> orderIds = orders.stream()
+			.mapToLong(o -> o.getOrderId())
+			.boxed()
+			.collect(toList());
+
+		// Query type: 0 for unfilled (open) orders, 1 for filled orders
+		syncOrders(oldStatus, orderIds, 0);
+		syncOrders(oldStatus, orderIds, 1);
+	}
+
+	private void syncOrders(Map<Long, Order> oldStatus, List<Long> orderIds,
+			int type) throws OKCoinException, IOException {
+		final Order[] newStatus = extRawTradeService.getOrders(symbol, type,
+				orderIds.toArray(new Long[] {}));
+		Arrays.stream(newStatus).forEach(
+			order -> {
+				final Order oldOrder = oldStatus.get(order.getOrderId());
+				if (order.getStatus() != oldOrder.getStatus()
+					|| !order.getDealAmount().equals(oldOrder.getDealAmount())
+					|| !order.getAvgPrice().equals(oldOrder.getAvgPrice())) {
+					orderDao.update(order);
+				}
+			}
+		);
 	}
 
 }
