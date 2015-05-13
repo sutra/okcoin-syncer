@@ -12,7 +12,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<name>OKCoin Syncer</name>
 	<description>
-		Synchronize public trades from OKCoin to database.
+		Synchronize public trades, own orders from OKCoin to database.
 	</description>
 	<inceptionYear>2015</inceptionYear>
 	<licenses>
