@@ -76,12 +76,19 @@ public class OKCoinTradeServiceRawExt {
 
 			currentPage++;
 			pageLength--;
-		} while (true);
+		} while (!Thread.interrupted() && !batch.isEmpty());
+
+		if (Thread.interrupted()) {
+			// Maybe has gap if thread is interrupted,
+			// discards the fetched orders.
+			orders.clear();
+		}
+
 		return toSortedSet(
-				orders
-				.stream()
-				.filter(o -> o.getOrderId() > sinceId)
-				.collect(Collectors.toSet()));
+			orders
+			.stream()
+			.filter(o -> o.getOrderId() > sinceId)
+			.collect(Collectors.toSet()));
 	}
 
 	public SortedSet<Order> getOrders(String symbol, int status,

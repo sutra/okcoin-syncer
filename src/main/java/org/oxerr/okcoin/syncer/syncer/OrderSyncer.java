@@ -139,6 +139,12 @@ public class OrderSyncer extends AbstractSyncer {
 				if (order.getStatus() != oldOrder.getStatus()
 					|| !order.getDealAmount().equals(oldOrder.getDealAmount())
 					|| !order.getAvgPrice().equals(oldOrder.getAvgPrice())) {
+						log.log(Level.FINEST, "Updating order {0} to {1}",
+							new Object[] {
+								order.getOrderId(),
+								order.getStatus(),
+							}
+						);
 					orderDao.update(order);
 				}
 			}
