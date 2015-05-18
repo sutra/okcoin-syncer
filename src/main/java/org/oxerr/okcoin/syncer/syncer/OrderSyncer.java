@@ -137,12 +137,18 @@ public class OrderSyncer extends AbstractSyncer {
 			order -> {
 				final Order oldOrder = oldStatus.get(order.getOrderId());
 				if (order.getStatus() != oldOrder.getStatus()
-					|| !order.getDealAmount().equals(oldOrder.getDealAmount())
-					|| !order.getAvgPrice().equals(oldOrder.getAvgPrice())) {
-						log.log(Level.FINEST, "Updating order {0} to {1}",
+					|| order.getDealAmount().compareTo(oldOrder.getDealAmount()) != 0
+					|| order.getAvgPrice().compareTo(oldOrder.getAvgPrice()) != 0) {
+						log.log(Level.FINEST,
+							"Updating order {0}({1}, {2}, {3}) to ({4}, {5}, {6})",
 							new Object[] {
-								order.getOrderId(),
+								oldOrder.getOrderId(),
+								oldOrder.getStatus(),
+								oldOrder.getDealAmount(),
+								oldOrder.getAvgPrice(),
 								order.getStatus(),
+								order.getDealAmount(),
+								order.getAvgPrice(),
 							}
 						);
 					orderDao.update(order);
