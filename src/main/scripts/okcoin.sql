@@ -1,56 +1,56 @@
-create table trade (
-	tid bigint primary key,
+CREATE TABLE trade (
+	tid bigint PRIMARY KEY,
 
 	-- transaction time
-	date timestamp with time zone not null,
+	date timestamp with time zone NOT NULL,
 
 	-- buy/sell
-	type varchar(4) not null,
+	type varchar(4) NOT NULL,
 
 	-- quantity in BTC (or LTC)
-	amount numeric(16,8) not null,
+	amount numeric(16,8) NOT NULL,
 
 	-- transaction price
-	price numeric(32,8) not null
+	price numeric(32,8) NOT NULL
 );
-create index trade_date on trade(date);
-create index trade_type on trade(type);
+CREATE INDEX trade_date ON trade(date);
+CREATE INDEX trade_type ON trade(type);
 
-create table "order" (
+CREATE TABLE "order" (
 	-- order ID
-	id bigint primary key,
+	id bigint PRIMARY KEY,
 
-	date timestamp with time zone not null,
+	date timestamp with time zone NOT NULL,
 
-	symbol char(7) not null,
+	symbol char(7) NOT NULL,
 
 	-- buy_market = market buy order, sell_market = market sell order
-	type varchar(16) not null,
+	type varchar(16) NOT NULL,
 
 	-- order price
-	price numeric(32,8) not null,
+	price numeric(32,8) NOT NULL,
 
 	-- for limit orders, the order quantity
 	-- for market orders,the filled quantity
-	amount numeric(16,8) not null,
+	amount numeric(16,8) NOT NULL,
 
 	-- filled quantity
-	deal_amount numeric(16,8) not null,
+	deal_amount numeric(16,8) NOT NULL,
 
 	-- -1 = cancelled,
 	-- 0 = unfilled,
 	-- 1 = partially filled,
 	-- 2 = fully filled,
 	-- 4 = cancel request in process
-	status int not null,
+	status int NOT NULL,
 
 	-- average transaction price
-	avg_price numeric(32,8) not null
+	avg_price numeric(32,8) NOT NULL
 );
-create index order_date on "order"(date);
-create index order_symbol on "order"(symbol);
-create index order_type on "order"(type);
-create index order_status on "order"(status);
+CREATE INDEX order_date ON "order"(date);
+CREATE INDEX order_symbol ON "order"(symbol);
+CREATE INDEX order_type ON "order"(type);
+CREATE INDEX order_status ON "order"(status);
 
 CREATE TABLE asset (
 	id uuid PRIMARY KEY,
