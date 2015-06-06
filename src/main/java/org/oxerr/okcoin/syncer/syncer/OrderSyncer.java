@@ -12,6 +12,8 @@ import java.util.SortedSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.PostConstruct;
+
 import org.oxerr.okcoin.rest.OKCoinException;
 import org.oxerr.okcoin.rest.dto.Order;
 import org.oxerr.okcoin.rest.dto.Status;
@@ -22,7 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OrderSyncer extends AbstractSyncer {
+public class OrderSyncer {
 
 	private final Logger log = Logger.getLogger(OrderSyncer.class.getName());
 	private final OKCoinTradeServiceRawExt extRawTradeService;
@@ -34,24 +36,18 @@ public class OrderSyncer extends AbstractSyncer {
 	public OrderSyncer(
 			OKCoinTradeServiceRawExt extRawTradeService,
 			OrderDao orderDao,
-			@Value("${okcoin.order.interval}") long interval,
 			@Value("${okcoin.order.symbol}") String symbol) {
-		super(interval);
 		this.extRawTradeService = extRawTradeService;
 		this.orderDao = orderDao;
 		this.symbol = symbol;
 	}
 
-	@Override
-	protected void init() {
+	@PostConstruct
+	private void init() {
 		this.lastId = orderDao.getLastId();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void sync() throws IOException {
+	public void sync() throws IOException {
 		if (!Thread.interrupted()) {
 			syncOrders();
 		}

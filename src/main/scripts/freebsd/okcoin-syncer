@@ -21,7 +21,6 @@ load_rc_config $name
 : ${okcoin_syncer_java_home:="/usr/local/openjdk8-jre"}
 : ${okcoin_syncer_lib:="${okcoin_syncer_basedir}/lib"}
 : ${okcoin_syncer_classpath:="${okcoin_syncer_etcdir}:${okcoin_syncer_lib}/*"}
-: ${okcoin_syncer_args:="tradeSyncer orderSyncer"}
 
 pidfile="/var/run/${name}.pid"
 
@@ -35,7 +34,6 @@ command_args="-java-home '${okcoin_syncer_java_home}' \
 	-classpath '/usr/local/share/java/classes/commons-daemon.jar:${okcoin_syncer_classpath}' \
 	-Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager \
 	-Dlog.dir='${okcoin_syncer_logdir}' \
-	org.oxerr.okcoin.syncer.SyncerDaemon \
-	${okcoin_syncer_args}"
+	org.oxerr.okcoin.syncer.SyncerDaemon"
 
 run_rc_command "$1"

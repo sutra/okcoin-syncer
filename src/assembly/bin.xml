@@ -23,5 +23,12 @@
 			<directory>src/main/config</directory>
 			<outputDirectory>etc</outputDirectory>
 		</fileSet>
+		<fileSet>
+			<directory>src/main/resources/META-INF/spring</directory>
+			<outputDirectory>etc/META-INF/spring</outputDirectory>
+			<includes>
+				<include>applicationContext-task.xml</include>
+			</includes>
+		</fileSet>
 	</fileSets>
 </assembly>
