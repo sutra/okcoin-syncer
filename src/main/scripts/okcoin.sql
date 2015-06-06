@@ -51,3 +51,22 @@ create index order_date on "order"(date);
 create index order_symbol on "order"(symbol);
 create index order_type on "order"(type);
 create index order_status on "order"(status);
+
+CREATE TABLE asset (
+	id uuid PRIMARY KEY,
+	date timestamp with time zone NOT NULL,
+	net numeric(32, 8) NOT NULL,
+	total numeric(32, 8) NOT NULL
+);
+CREATE INDEX asset_date ON asset(date);
+
+CREATE TABLE fund (
+	id uuid PRIMARY KEY,
+	asset_id uuid NOT NULL REFERENCES asset (id),
+	currency char(3) NOT NULL,
+	free numeric(32, 8) NOT NULL,
+	frozen numeric(32, 8) NOT NULL,
+	borrow numeric(32, 8) NOT NULL,
+	"union" numeric(32, 8) NOT NULL,
+	UNIQUE(asset_id, currency)
+);

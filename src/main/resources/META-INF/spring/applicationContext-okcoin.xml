@@ -38,6 +38,11 @@
 		factory-bean="exchange"
 		factory-method="getPollingMarketDataService" />
 	<bean
+		id="accountService"
+		class="org.oxerr.okcoin.rest.service.polling.OKCoinAccountServiceRaw"
+		factory-bean="exchange"
+		factory-method="getPollingAccountService" />
+	<bean
 		id="tradeService"
 		class="org.oxerr.okcoin.rest.service.polling.OKCoinTradeServiceRaw"
 		factory-bean="exchange"
