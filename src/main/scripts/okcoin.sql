@@ -1,3 +1,5 @@
+-- Create database schema.
+
 CREATE TABLE trade (
 	tid bigint PRIMARY KEY,
 
