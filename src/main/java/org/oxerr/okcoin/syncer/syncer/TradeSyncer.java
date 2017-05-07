@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 
 import org.oxerr.okcoin.rest.dto.Trade;
-import org.oxerr.okcoin.rest.service.polling.OKCoinMarketDataServiceRaw;
+import org.oxerr.okcoin.rest.service.OKCoinMarketDataServiceRaw;
 import org.oxerr.okcoin.syncer.dao.TradeDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

@@ -18,35 +18,35 @@
 
 	<bean
 		id="exchangeSpecification"
-		class="com.xeiam.xchange.ExchangeSpecification"
+		class="org.knowm.xchange.ExchangeSpecification"
 		c:_0="org.oxerr.okcoin.rest.OKCoinExchange"
 		p:apiKey="${okcoin.accessKey}"
 		p:secretKey="${okcoin.secretKey}" />
 	<util:constant
 		id="exchangeFactory"
-		static-field="com.xeiam.xchange.ExchangeFactory.INSTANCE"/>
+		static-field="org.knowm.xchange.ExchangeFactory.INSTANCE"/>
 	<bean
 		id="exchange"
-		class="com.xeiam.xchange.Exchange"
+		class="org.knowm.xchange.Exchange"
 		factory-bean="exchangeFactory"
 		factory-method="createExchange"
 		c:_0-ref="exchangeSpecification" />
 
 	<bean
 		id="marketDataService"
-		class="org.oxerr.okcoin.rest.service.polling.OKCoinMarketDataServiceRaw"
+		class="org.oxerr.okcoin.rest.service.OKCoinMarketDataServiceRaw"
 		factory-bean="exchange"
-		factory-method="getPollingMarketDataService" />
+		factory-method="getMarketDataService" />
 	<bean
 		id="accountService"
-		class="org.oxerr.okcoin.rest.service.polling.OKCoinAccountServiceRaw"
+		class="org.oxerr.okcoin.rest.service.OKCoinAccountServiceRaw"
 		factory-bean="exchange"
-		factory-method="getPollingAccountService" />
+		factory-method="getAccountService" />
 	<bean
 		id="tradeService"
-		class="org.oxerr.okcoin.rest.service.polling.OKCoinTradeServiceRaw"
+		class="org.oxerr.okcoin.rest.service.OKCoinTradeServiceRaw"
 		factory-bean="exchange"
-		factory-method="getPollingTradeService" />
+		factory-method="getTradeService" />
 	<bean
 		id="retryService"
 		class="org.oxerr.okcoin.syncer.service.IOExceptionRetryService"

@@ -13,7 +13,7 @@ import org.oxerr.okcoin.rest.OKCoinException;
 import org.oxerr.okcoin.rest.dto.Order;
 import org.oxerr.okcoin.rest.dto.OrderHistory;
 import org.oxerr.okcoin.rest.dto.OrderResult;
-import org.oxerr.okcoin.rest.service.polling.OKCoinTradeServiceRaw;
+import org.oxerr.okcoin.rest.service.OKCoinTradeServiceRaw;
 
 public class OKCoinTradeServiceRawExt {
 

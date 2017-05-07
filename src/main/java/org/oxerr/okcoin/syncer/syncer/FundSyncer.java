@@ -5,7 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.oxerr.okcoin.rest.dto.UserInfo;
-import org.oxerr.okcoin.rest.service.polling.OKCoinAccountServiceRaw;
+import org.oxerr.okcoin.rest.service.OKCoinAccountServiceRaw;
 import org.oxerr.okcoin.syncer.dao.FundDao;
 import org.oxerr.okcoin.syncer.service.IOExceptionRetryService;
 import org.springframework.beans.factory.annotation.Autowired;
