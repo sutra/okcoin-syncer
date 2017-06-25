@@ -33,7 +33,7 @@ public class JdbcTradeDao extends JdbcDaoSupport implements TradeDao {
 	@Override
 	public int[] insert(Trade[] trades) {
 		return getJdbcTemplate().batchUpdate(
-			"insert into trade(tid, date, type, amount, price) values(?, ?, ?, ?, ?)",
+			"insert into trade(tid, date, type, amount, price) values(?, ?, ?::\"type\", ?, ?)",
 			new BatchPreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {

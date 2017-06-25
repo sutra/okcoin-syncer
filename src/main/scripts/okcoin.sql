@@ -1,5 +1,8 @@
 -- Create database schema.
 
+-- org.oxerr.okcoin.rest.dto.Type
+CREATE TYPE "type" AS ENUM ('buy', 'sell', 'buy_market', 'sell_market');
+
 CREATE TABLE trade (
 	tid bigint PRIMARY KEY,
 
@@ -7,7 +10,7 @@ CREATE TABLE trade (
 	date timestamp with time zone NOT NULL,
 
 	-- buy/sell
-	type varchar(4) NOT NULL,
+	"type" "type" NOT NULL,
 
 	-- quantity in BTC (or LTC)
 	amount numeric(16,8) NOT NULL,
@@ -27,7 +30,7 @@ CREATE TABLE "order" (
 	symbol char(7) NOT NULL,
 
 	-- buy_market = market buy order, sell_market = market sell order
-	type varchar(16) NOT NULL,
+	"type" "type" NOT NULL,
 
 	-- order price
 	price numeric(32,8) NOT NULL,

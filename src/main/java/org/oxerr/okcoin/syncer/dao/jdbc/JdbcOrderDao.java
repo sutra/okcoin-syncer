@@ -31,7 +31,7 @@ public class JdbcOrderDao extends JdbcDaoSupport implements OrderDao {
 
 	private static final String GET_MAX_ID_SQL = "select max(id) from \"order\"";
 	private static final String SELECT_ORDER_SQL = "select id, date, symbol, type, price, amount, deal_amount, status, avg_price from \"order\" where status = ? and id > ? order by id limit ?";
-	private static final String INSERT_ORDER_SQL = "insert into \"order\"(id, date, symbol, type, price, amount, deal_amount, status, avg_price) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT_ORDER_SQL = "insert into \"order\"(id, date, symbol, type, price, amount, deal_amount, status, avg_price) values(?, ?, ?, ?::\"type\", ?, ?, ?, ?, ?)";
 	private static final String UPDATE_ORDER_SQL = "update \"order\" set deal_amount = ?, status = ?, avg_price = ? where id = ?";
 
 	private final Logger log = Logger.getLogger(JdbcOrderDao.class.getName());
